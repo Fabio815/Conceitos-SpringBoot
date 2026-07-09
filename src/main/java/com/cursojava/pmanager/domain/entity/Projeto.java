@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor //Cria um construtur com elementos.
 @NoArgsConstructor //Construtur sem elementos
 public class Projeto {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",  nullable = false)
