@@ -1,4 +1,4 @@
 package com.cursojava.pmanager.domain.model;
 
-public class StatusProjeto {
+public enum StatusProjeto {
 }
