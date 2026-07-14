@@ -1,3 +1,10 @@
+server:
+  servlet:
+      context-path: /pmanager
+  port: 8080
 spring:
   application:
     name: pmanager
+  h2:
+    console:
+      enabled: true
