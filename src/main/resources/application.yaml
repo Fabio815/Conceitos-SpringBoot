@@ -3,6 +3,8 @@ server:
       context-path: /pmanager
   port: 8080
 spring:
+  jackson:
+    default-property-inclusion: non_null  #isso aqui é para remover da requisição de valores nulos.
   application:
     name: pmanager
   datasource:
