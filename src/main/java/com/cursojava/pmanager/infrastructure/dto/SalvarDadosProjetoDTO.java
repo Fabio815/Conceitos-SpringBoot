@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 public class SalvarDadosProjetoDTO {
 //Usando o beanValidation para verificar se a requisição respeita a entidade.
     @NotNull
+
+
     @Size(min = 1, max = 80)
     private final String nome;
 
