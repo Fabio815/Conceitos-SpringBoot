@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,10 +40,8 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         List<String> listaErro = new ArrayList<>();
         //log.info("Aqui o erro {}", ex.getBindingResult().getFieldError().toString());
         //List<Object> teste = Collections.singletonList(ex.getBindingResult().getFieldError());
-        for (Object erro : Collections.singletonList(Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage())) {
-            if (erro != null) {
-                listaErro.add(erro.toString());
-            }
+        for (ObjectError erro : ex.getBindingResult().getAllErrors()) {
+            listaErro.add(erro.getDefaultMessage());
         }
         return handlerException(ex, "Erro de validacao", null, listaErro, HttpStatus.BAD_REQUEST, request);
     }

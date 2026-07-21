@@ -29,9 +29,8 @@ public class SalvarDadosProjetoDTO {
 
     private final String status;
 
-    @AssertTrue(message = "Data não consistente")
-    @SuppressWarnings("unused")//é para a IDE para de reclamar que não está sendo usado.
-    private boolean datafinalMenorQueInicial() {
-        return dataInicial.isBefore(dataFinal) ;
+    @AssertTrue(message = "A data inicial deve ser anterior à data final")
+    private boolean isDatasValidas() {
+        return dataInicial.isBefore(dataFinal);
     }
 }
