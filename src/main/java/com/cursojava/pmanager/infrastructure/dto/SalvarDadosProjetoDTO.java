@@ -12,20 +12,18 @@ import java.time.LocalDateTime;
 @Data
 public class SalvarDadosProjetoDTO {
 //Usando o beanValidation para verificar se a requisição respeita a entidade.
-    @NotNull
-
-
-    @Size(min = 1, max = 80)
+    @NotNull(message = "O campo não pode ser vazio")
+    @Size(min = 1, max = 80, message = "Nome maior que 80 caracteres")
     private final String nome;
 
-    @NotNull
-    @Size(min = 1, max = 150)
+    @NotNull(message = "O campo não pode ser vazio")
+    @Size(min = 1, max = 150, message = "Descrição maior que 150 caracteres")
     private final String descricao;
 
-    @NotNull
+    @NotNull(message = "O campo não pode ser vazio")
     private final LocalDate dataInicial;
 
-    @NotNull
+    @NotNull(message = "O campo não pode ser vazio")
     private final LocalDate dataFinal;
 
     private final String status;
