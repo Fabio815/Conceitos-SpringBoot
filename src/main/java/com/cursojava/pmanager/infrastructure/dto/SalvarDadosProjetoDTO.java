@@ -2,6 +2,7 @@ package com.cursojava.pmanager.infrastructure.dto;
 
 import com.cursojava.pmanager.domain.model.StatusProjeto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -27,4 +28,10 @@ public class SalvarDadosProjetoDTO {
     private final LocalDate dataFinal;
 
     private final String status;
+
+    @AssertTrue(message = "Data não consistente")
+    @SuppressWarnings("unused")//é para a IDE para de reclamar que não está sendo usado.
+    private boolean datafinalMenorQueInicial() {
+        return dataInicial.isBefore(dataFinal) ;
+    }
 }
