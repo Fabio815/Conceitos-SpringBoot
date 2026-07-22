@@ -31,6 +31,7 @@ public class SalvarDadosProjetoDTO {
 
     @AssertTrue(message = "A data inicial deve ser anterior à data final")
     private boolean isDatasValidas() {
+
         return dataInicial.isBefore(dataFinal);
     }
 }

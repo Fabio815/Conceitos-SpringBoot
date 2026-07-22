@@ -22,4 +22,10 @@ public class ProjetoResource {
         Projeto projeto = projetoService.criarProjeto(salvarDadosProjetoDTO);
         return ResponseEntity.created(URI.create("/projeto/" + projeto.getId())).body(ProjetoDTO.criar(projeto));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProjetoDTO> consultar(@PathVariable Long id) {
+        Projeto projeto = projetoService.carregarProjeto(id);
+        return ResponseEntity.ok(ProjetoDTO.criar(projeto));
+    }
 }
