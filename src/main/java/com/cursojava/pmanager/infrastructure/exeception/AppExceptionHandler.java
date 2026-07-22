@@ -64,3 +64,10 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 }
+/*
+* handlerGenericException: trata erros inesperados da aplicação, geralmente problemas internos do servidor (bugs, falha no banco, erro de programação, etc.).
+*
+* handlerRequestException: Trata exceções personalizadas lançadas pela aplicação, quando alguma regra de negócio não é atendida, por exemplo.
+*
+* handleMethodArgumentNotValid: trata erros de validação dos dados enviados pelo cliente. Ocorre quando alguma anotação de validação (@NotBlank, @Size, @NotNull, etc.) não é respeitada.
+* */
