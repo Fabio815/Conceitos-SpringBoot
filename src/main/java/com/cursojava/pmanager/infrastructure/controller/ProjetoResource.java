@@ -28,4 +28,10 @@ public class ProjetoResource {
         Projeto projeto = projetoService.carregarProjeto(id);
         return ResponseEntity.ok(ProjetoDTO.criar(projeto));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        projetoService.deletarProjeto(id);
+        return ResponseEntity.noContent().build();
+    }
 }

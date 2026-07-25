@@ -5,6 +5,7 @@ import com.cursojava.pmanager.domain.exception.ProjetoNaoEncontradoException;
 import com.cursojava.pmanager.domain.model.StatusProjeto;
 import com.cursojava.pmanager.domain.repository.ProjetoRepository;
 import com.cursojava.pmanager.infrastructure.dto.SalvarDadosProjetoDTO;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ public class ProjetoService {
 
     private final ProjetoRepository projetoRepository;
 
+    @Transactional
     public Projeto criarProjeto(SalvarDadosProjetoDTO salvarDadosProjeto) {
         Projeto projeto = Projeto.builder()
                 .nome(salvarDadosProjeto.getNome())
@@ -42,5 +44,11 @@ public class ProjetoService {
         return op.get();*/
 
         return projetoRepository.findById(idProjeto).orElseThrow(() -> new ProjetoNaoEncontradoException(idProjeto));
+    }
+
+    @Transactional
+    public void deletarProjeto(Long idProjeto) {
+        Projeto projeto = carregarProjeto(idProjeto);
+        projetoRepository.delete(projeto);
     }
 }
