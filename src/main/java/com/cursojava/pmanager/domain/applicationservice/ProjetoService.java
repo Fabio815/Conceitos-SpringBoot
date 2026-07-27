@@ -2,6 +2,7 @@ package com.cursojava.pmanager.domain.applicationservice;
 
 import com.cursojava.pmanager.domain.entity.Projeto;
 import com.cursojava.pmanager.domain.exception.ProjetoNaoEncontradoException;
+import com.cursojava.pmanager.domain.exception.StatusDoProjetoInvalidoException;
 import com.cursojava.pmanager.domain.model.StatusProjeto;
 import com.cursojava.pmanager.domain.repository.ProjetoRepository;
 import com.cursojava.pmanager.infrastructure.dto.SalvarDadosProjetoDTO;
@@ -44,6 +45,27 @@ public class ProjetoService {
         return op.get();*/
 
         return projetoRepository.findById(idProjeto).orElseThrow(() -> new ProjetoNaoEncontradoException(idProjeto));
+    }
+
+    @Transactional
+    public Projeto atualizarProjeto(Long id, SalvarDadosProjetoDTO salvarDadosProjetoDTO) {
+        Projeto projeto = carregarProjeto(id);
+
+        projeto.setNome(salvarDadosProjetoDTO.getNome());
+        projeto.setDescricao(salvarDadosProjetoDTO.getDescricao());
+        projeto.setDataFinal(salvarDadosProjetoDTO.getDataFinal());
+        projeto.setDataInicial(salvarDadosProjetoDTO.getDataInicial());
+        projeto.setStatus(converteParaStatusProjeto(salvarDadosProjetoDTO.getStatus()));
+
+        return projeto;
+    }
+
+    public StatusProjeto converteParaStatusProjeto(String status) {
+        try {
+            return StatusProjeto.valueOf(status);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new StatusDoProjetoInvalidoException(status);
+        }
     }
 
     @Transactional

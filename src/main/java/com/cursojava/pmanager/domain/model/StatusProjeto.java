@@ -1,5 +1,6 @@
 package com.cursojava.pmanager.domain.model;
 
 public enum StatusProjeto {
-    PENDENTE
+    PENDENTE,
+    EM_PROGRESSO
 }

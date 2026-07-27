@@ -29,6 +29,12 @@ public class ProjetoResource {
         return ResponseEntity.ok(ProjetoDTO.criar(projeto));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjetoDTO> atualizar(@PathVariable("id") Long idPrjeto, @RequestBody @Valid SalvarDadosProjetoDTO salvarDadosProjetoDTO) {
+        Projeto projeto = projetoService.atualizarProjeto(idPrjeto, salvarDadosProjetoDTO);
+        return ResponseEntity.ok(ProjetoDTO.criar(projeto));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         projetoService.deletarProjeto(id);
