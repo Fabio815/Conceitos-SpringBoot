@@ -1,6 +1,7 @@
 package com.cursojava.pmanager.domain.applicationservice;
 
 import com.cursojava.pmanager.domain.entity.Projeto;
+import com.cursojava.pmanager.domain.exception.ProjetoDuplicadoException;
 import com.cursojava.pmanager.domain.exception.ProjetoNaoEncontradoException;
 import com.cursojava.pmanager.domain.exception.StatusDoProjetoInvalidoException;
 import com.cursojava.pmanager.domain.model.StatusProjeto;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,6 +27,9 @@ public class ProjetoService {
 
     @Transactional
     public Projeto criarProjeto(SalvarDadosProjetoDTO salvarDadosProjeto) {
+        if (nomeProjetoExiste(salvarDadosProjeto.getNome(), null)) {
+            throw new ProjetoDuplicadoException(salvarDadosProjeto.getNome());
+        }
         Projeto projeto = Projeto.builder()
                 .nome(salvarDadosProjeto.getNome())
                 .descricao(salvarDadosProjeto.getDescricao())
@@ -49,6 +54,9 @@ public class ProjetoService {
 
     @Transactional
     public Projeto atualizarProjeto(Long id, SalvarDadosProjetoDTO salvarDadosProjetoDTO) {
+        if (nomeProjetoExiste(salvarDadosProjetoDTO.getNome(), id)) {
+            throw new ProjetoDuplicadoException(salvarDadosProjetoDTO.getNome());
+        }
         Projeto projeto = carregarProjeto(id);
 
         projeto.setNome(salvarDadosProjetoDTO.getNome());
@@ -58,6 +66,21 @@ public class ProjetoService {
         projeto.setStatus(converteParaStatusProjeto(salvarDadosProjetoDTO.getStatus()));
 
         return projeto;
+    }
+
+    public boolean nomeProjetoExiste(String nome, Long idProjeto) {
+        /*Optional<Projeto> op = projetoRepository.findByNome(nome);
+        if (op.isEmpty()) {
+            return false;
+        }
+        Projeto projeto = op.get();
+        if (projeto.getId().equals(idProjeto)) {
+            return false;
+        }
+        return true;*/
+
+        return projetoRepository.findByNome(nome).
+                filter(projeto -> !Objects.equals(projeto.getId(), idProjeto)).isPresent();
     }
 
     public StatusProjeto converteParaStatusProjeto(String status) {
