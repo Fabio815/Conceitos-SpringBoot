@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/projetos")
+@RequestMapping("/projeto")
 @RequiredArgsConstructor
 public class ProjetoResource {
     private final ProjetoService projetoService;
