@@ -25,4 +25,15 @@ public class MembroResource {
         return ResponseEntity.created(URI.create("/membro/" + membro.getId())).body(MembroDTO.criarMembro(membro));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<MembroDTO> carregarMembro(@PathVariable("id") Long id) {
+        Membro membro = membroService.carregarMembroPorId(id);
+        return ResponseEntity.ok(MembroDTO.criarMembro(membro));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> desativarMembro(@PathVariable("id") Long id) {
+        membroService.desativarMembro(id);
+        return ResponseEntity.noContent().build();
+    }
 }
