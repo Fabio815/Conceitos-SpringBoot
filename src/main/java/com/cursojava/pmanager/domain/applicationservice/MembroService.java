@@ -43,4 +43,13 @@ public class MembroService {
         Membro membro = carregarMembroPorId(id);
         membro.setDesativo(true);
     }
+
+    @Transactional
+    public Membro atualizarMembro(Long id, SalvarMembroDTO salvarMembroDTO) {
+        Membro membro = carregarMembroPorId(id);
+        membro.setNome(salvarMembroDTO.getNome());
+        membro.setEmail(salvarMembroDTO.getEmail());
+
+        return membro;
+    }
 }

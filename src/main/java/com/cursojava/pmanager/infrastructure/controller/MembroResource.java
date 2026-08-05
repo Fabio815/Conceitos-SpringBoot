@@ -36,4 +36,10 @@ public class MembroResource {
         membroService.desativarMembro(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<MembroDTO> atualizarMembro(@PathVariable("id") Long id, @RequestBody @Valid SalvarMembroDTO salvarMembroDTO) {
+        Membro membro = membroService.atualizarMembro(id, salvarMembroDTO);
+        return ResponseEntity.ok(MembroDTO.criarMembro(membro));
+    }
 }
