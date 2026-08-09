@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -41,5 +42,11 @@ public class MembroResource {
     public ResponseEntity<MembroDTO> atualizarMembro(@PathVariable("id") Long id, @RequestBody @Valid SalvarMembroDTO salvarMembroDTO) {
         Membro membro = membroService.atualizarMembro(id, salvarMembroDTO);
         return ResponseEntity.ok(MembroDTO.criarMembro(membro));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<MembroDTO>> listarMembros(@RequestParam(value = "email", required = false) String email) {
+        List<Membro> membros = membroService.listarMembros(email);
+        return ResponseEntity.ok(membros.stream().map(MembroDTO::criarMembro).toList());
     }
 }

@@ -11,4 +11,6 @@ public interface MembroRepository extends JpaRepository<Membro, Long> {
     Optional<Membro> findByIdAndDesativo(Long id, boolean desativo);
 
     Optional<Membro> findByEmailAndDesativo(String email, boolean desativo);
+
+
 }
