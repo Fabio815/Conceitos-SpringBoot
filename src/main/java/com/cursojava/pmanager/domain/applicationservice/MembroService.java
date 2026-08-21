@@ -70,8 +70,8 @@ public class MembroService {
 
     public List<Membro> listarMembros(String email) {
         List<Membro> listaMembros = null;
-        if (email.isEmpty()) {
-            listaMembros = membroRepository.findAll();
+        if (Objects.isNull(email)) {
+            listaMembros = membroRepository.findAllNotDeleted();
         } else {
             Optional<Membro> op = membroRepository.findByEmailAndDesativo(email, false);
             if (op.isPresent()) {
