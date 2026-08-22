@@ -1,5 +1,6 @@
 package com.cursojava.pmanager.domain.applicationservice;
 
+import com.cursojava.pmanager.domain.entity.Membro;
 import com.cursojava.pmanager.domain.entity.Projeto;
 import com.cursojava.pmanager.domain.exception.ProjetoDuplicadoException;
 import com.cursojava.pmanager.domain.exception.ProjetoNaoEncontradoException;
@@ -14,8 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +28,7 @@ public class ProjetoService {
     //private static final Logger LOGGER = LoggerFactory.getLogger(ProjetoService.class); È CONSIDERADO BOILPLATECODE ENTÃO USAMOS O @Slf4j...
 
     private final ProjetoRepository projetoRepository;
+    private final MembroService membroService;
 
     @Transactional
     public Projeto criarProjeto(SalvarDadosProjetoDTO salvarDadosProjeto) {
@@ -38,6 +43,8 @@ public class ProjetoService {
                 .status(StatusProjeto.PENDENTE).build();
 
         projetoRepository.save(projeto);
+        addMembrosAoProjeto(salvarDadosProjeto.getMembrosIds(), projeto);
+
         log.info("Projeto Criado com sucesso! {}",  projeto);
         return projeto;
     }
@@ -64,6 +71,8 @@ public class ProjetoService {
         projeto.setDataFinal(salvarDadosProjetoDTO.getDataFinal());
         projeto.setDataInicial(salvarDadosProjetoDTO.getDataInicial());
         projeto.setStatus(converteParaStatusProjeto(salvarDadosProjetoDTO.getStatus()));
+
+        addMembrosAoProjeto(salvarDadosProjetoDTO.getMembrosIds(), projeto);
 
         return projeto;
     }
@@ -95,5 +104,20 @@ public class ProjetoService {
     public void deletarProjeto(Long idProjeto) {
         Projeto projeto = carregarProjeto(idProjeto);
         projetoRepository.delete(projeto);
+    }
+
+    private void addMembrosAoProjeto(Set<Long> membrosIds, Projeto projeto) {
+        List<Membro> membros = Optional
+                .ofNullable(membrosIds)
+                .orElse(Set.of())
+                .stream()
+                .map(membroService::carregarMembroPorId)
+                .collect(Collectors.toList());
+
+        /*Set<Membro> membros1 = new HashSet<>();
+        for (Long id : membrosIdNotNull) {
+            membros1.add(membroService.carregarMembroPorId(id));
+        }*/
+        projeto.setMembros(membros);
     }
 }

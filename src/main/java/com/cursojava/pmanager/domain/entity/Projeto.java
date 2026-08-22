@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
 //Usando lombok para tirar o BoilerPlate que é o código que não faz parte na regra de negócio, no caso não preciso dele para entender o fluxo do código (get, set, construtor, etc...).
 @Entity
 @Table(name = "projeto")
@@ -36,4 +38,12 @@ public class Projeto {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusProjeto status;
+
+    @ManyToMany//Se fosse um relacionamento unidirecional apenas isso bastava para funcionar, mas como é um bidirecional preciso fazer na outra entidade também.
+    @JoinTable(// Esse cara é o dono do relacionamento
+            name = "project_member",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "member_id")
+    )
+    private List<Membro> membros;
 }

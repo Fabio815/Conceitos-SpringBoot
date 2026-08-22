@@ -9,6 +9,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 public class SalvarDadosProjetoDTO {
@@ -28,6 +29,8 @@ public class SalvarDadosProjetoDTO {
     private final LocalDate dataFinal;
 
     private final String status;
+
+    private final Set<Long> membrosIds;
 
     @AssertTrue(message = "A data inicial deve ser anterior à data final")
     private boolean isDatasValidas() {

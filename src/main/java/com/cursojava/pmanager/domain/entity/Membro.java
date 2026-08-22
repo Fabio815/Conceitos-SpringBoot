@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "membro")
 @Data
@@ -31,4 +33,7 @@ public class Membro {
 
     @Column(name = "desativo", nullable = false)
     private Boolean desativo;
+
+    @ManyToMany(mappedBy = "membros")//Estou falando que o outro lado é o dono
+    private List<Projeto> projetos;
 }
