@@ -8,10 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -22,8 +19,20 @@ public class TaskResource {
     private final TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<TaskDTO> salvar(@RequestBody @Valid SalvarTaskDTO salvarTaskDTO) {
+    public ResponseEntity<TaskDTO> salvarTask(@RequestBody @Valid SalvarTaskDTO salvarTaskDTO) {
         Task task = taskService.criarTask(salvarTaskDTO);
         return ResponseEntity.created(URI.create("/task/" + task.getId())).body(TaskDTO.criar(task));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskDTO> carregarTask(@PathVariable("id") Long id) {
+        Task task = taskService.carregarTask(id);
+        return ResponseEntity.ok(TaskDTO.criar(task));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarTask(@PathVariable("id") Long id) {
+        taskService.deletarTask(id);
+        return ResponseEntity.noContent().build();
     }
 }
