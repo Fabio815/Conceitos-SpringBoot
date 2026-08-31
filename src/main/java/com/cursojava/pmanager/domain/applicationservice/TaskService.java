@@ -1,6 +1,7 @@
 package com.cursojava.pmanager.domain.applicationservice;
 
 import com.cursojava.pmanager.domain.entity.Task;
+import com.cursojava.pmanager.domain.exception.StatusDaTaskInvalidoException;
 import com.cursojava.pmanager.domain.exception.TaskNaoEncontradaException;
 import com.cursojava.pmanager.domain.model.TaskStatus;
 import com.cursojava.pmanager.domain.repository.TaskRepository;
@@ -41,8 +42,29 @@ public class TaskService {
                 .orElseThrow(() -> new TaskNaoEncontradaException(id));
     }
 
+    @Transactional
     public void deletarTask(Long id) {
         Task task = carregarTask(id);
         taskRepository.delete(task);
+    }
+
+    @Transactional
+    public Task atualizarTask(Long id, SalvarTaskDTO salvarTaskDTO) {
+        Task task = carregarTask(id);
+
+        task.setTitulo(salvarTaskDTO.getTitulo());
+        task.setDescricao(salvarTaskDTO.getDescricao());
+        task.setNumerosDeDias(salvarTaskDTO.getNumeroDeDias());
+        task.setStatus(converterParaTaskStatus(salvarTaskDTO.getStatus()));
+
+        return task;
+    }
+
+    private TaskStatus converterParaTaskStatus(String taskStatus) {
+        try {
+            return TaskStatus.valueOf(taskStatus);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new StatusDaTaskInvalidoException(taskStatus);
+        }
     }
 }

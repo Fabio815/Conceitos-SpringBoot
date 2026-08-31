@@ -35,4 +35,10 @@ public class TaskResource {
         taskService.deletarTask(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskDTO> atualizarTask(@PathVariable("id") Long id, @RequestBody @Valid SalvarTaskDTO taskDTO) {
+        Task task = taskService.atualizarTask(id, taskDTO);
+        return ResponseEntity.ok(TaskDTO.criar(task));
+    }
 }

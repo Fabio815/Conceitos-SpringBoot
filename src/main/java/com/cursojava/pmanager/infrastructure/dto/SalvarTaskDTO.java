@@ -20,5 +20,5 @@ public class SalvarTaskDTO {
     @Positive(message = "O número deve ser positivo")
     private final Integer numeroDeDias;
 
-    private final TaskStatus status;
+    private final String status;
 }
