@@ -32,4 +32,13 @@ public class Task {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "projeto_id")
+    private Projeto projeto;
+
+    @ManyToOne
+    @JoinColumn(name = "assined_member")//Relacionameto é unidirecional, não preciso que fazer nada na Membro, pois é só a tasks que enxerga.
+    private Membro assigedMembro;
+
 }
