@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -75,6 +76,15 @@ public class TaskService {
         return task;
     }
 
+    public List<Task> encontrarTasks(Long projetoId, Long membroId, String status, String tituloParcial) {
+        return taskRepository.find(
+                projetoId,
+                membroId,
+                Optional.ofNullable(status).map(this::converterParaTaskStatus).orElse(null),//verifica se o status é nulo, se não for executa o método.
+                tituloParcial
+        );
+    }
+
     private @Nullable Membro possivelAdicionarMembro(SalvarTaskDTO salvarTaskDTO) {
         Membro membro = null;
         if (!Objects.isNull(salvarTaskDTO.getMembroId())) {
@@ -98,4 +108,6 @@ public class TaskService {
             throw new StatusDaTaskInvalidoException(taskStatus);
         }
     }
+
+
 }

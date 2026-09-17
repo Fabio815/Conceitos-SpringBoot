@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/task")
@@ -40,5 +41,16 @@ public class TaskResource {
     public ResponseEntity<TaskDTO> atualizarTask(@PathVariable("id") Long id, @RequestBody @Valid SalvarTaskDTO taskDTO) {
         Task task = taskService.atualizarTask(id, taskDTO);
         return ResponseEntity.ok(TaskDTO.criar(task));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TaskDTO>> encontrarTasks(
+            @RequestParam(value = "projectId", required = false) Long projetoId,
+            @RequestParam(value = "membroId", required = false) Long membroId,
+            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "tituloParcial", required = false) String tituloParcial) {
+        List<Task> tasks = taskService.encontrarTasks(projetoId, membroId, status, tituloParcial);
+
+        return ResponseEntity.ok(tasks.stream().map(TaskDTO::criar).toList());
     }
 }
