@@ -21,4 +21,8 @@ public class SalvarTaskDTO {
     private final Integer numeroDeDias;
 
     private final String status;
+
+    private final Long projetoId;
+
+    private final Long membroId;
 }

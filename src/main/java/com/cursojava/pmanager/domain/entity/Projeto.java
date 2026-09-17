@@ -47,6 +47,7 @@ public class Projeto {
     )
     private List<Membro> membros;
 
-    @OneToMany(mappedBy = "projeto")//Estou falando para a JPA ir lá no tasks é ver a configuração, pois o tasks é quem manda.
+    //Estou falando para a JPA ir lá no tasks é ver a configuração, pois o tasks é quem manda.
+    @OneToMany(mappedBy = "projeto", orphanRemoval = true)
     private List<Task> tasks;
 }
