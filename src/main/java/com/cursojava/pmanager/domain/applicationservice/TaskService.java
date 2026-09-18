@@ -11,6 +11,8 @@ import com.cursojava.pmanager.infrastructure.dto.SalvarTaskDTO;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,12 +78,22 @@ public class TaskService {
         return task;
     }
 
-    public List<Task> encontrarTasks(Long projetoId, Long membroId, String status, String tituloParcial) {
+    public Page<Task> encontrarTasks(
+            Long projetoId,
+            Long membroId,
+            String status,
+            String tituloParcial) {
+
+        TaskStatus taskStatus = Optional.ofNullable(status)
+                .map(this::converterParaTaskStatus)
+                .orElse(null);
+
         return taskRepository.find(
                 projetoId,
                 membroId,
-                Optional.ofNullable(status).map(this::converterParaTaskStatus).orElse(null),//verifica se o status é nulo, se não for executa o método.
-                tituloParcial
+                taskStatus,
+                tituloParcial,
+                PageRequest.of(0, 3)
         );
     }
 

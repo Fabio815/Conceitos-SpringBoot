@@ -7,6 +7,7 @@ import com.cursojava.pmanager.infrastructure.dto.TaskDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
+import org.hibernate.query.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +50,7 @@ public class TaskResource {
             @RequestParam(value = "membroId", required = false) Long membroId,
             @RequestParam(value = "status", required = false) String status,
             @RequestParam(value = "tituloParcial", required = false) String tituloParcial) {
-        List<Task> tasks = taskService.encontrarTasks(projetoId, membroId, status, tituloParcial);
+        Page<Task> tasks = taskService.encontrarTasks(projetoId, membroId, status, tituloParcial);
 
         return ResponseEntity.ok(tasks.stream().map(TaskDTO::criar).toList());
     }
